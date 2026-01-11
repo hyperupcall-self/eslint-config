@@ -20,11 +20,15 @@ import configPrettier from 'eslint-config-prettier'
 
 /**
  * @import { Linter } from 'eslint'
- * @import { Config, RuleEntry } from '@eslint/config-helpers'
  */
 
 // TODO: import-x
-
+// TODO: @eslint/css: Original 0.13, new: 0.14
+// TODO: @eslint/js: Original 9.38.0, new: 9.39.2
+// TODO: @eslint/json: Original 0.13.2, new: 0.14.0
+// TODO: @eslint/markdown: Original: 7.4.1, new: 7.5.1
+// TODO: @eslint/plugin-perfectionist: Original: 4.15.1, new: 5.3.1
+// TODO: @eslint/plugin-unicorn: riginal: 61.0.2, new: 62.0.0
 const CurrentMode = process.env.HYPERUPCALL_LINT_LEVEL || 'release'
 
 const cssFiles = ['**/*.css']
@@ -47,6 +51,7 @@ export default defineConfig([
 	// @eslint/js: https://github.com/eslint/eslint/tree/main/packages/js
 	{
 		files: jsFiles,
+
 		plugins: { js },
 		extends: processExtends([js.configs.recommended]),
 		rules: processRules({
@@ -226,7 +231,7 @@ export default defineConfig([
 
 /**
  * @param {Record<'edit' | 'commit' | 'release', unknown | undefined>} toggles
- * @returns {RuleEntry}
+ * @returns {Linter.RuleEntry}
  */
 function mode(toggles) {
 	const possibleModes = ['none', 'edit', 'commit', 'release']
@@ -240,7 +245,7 @@ function mode(toggles) {
 		)
 	}
 
-	return /** @type RuleEntry */ (toggles[currentMode])
+	return /** @type Linter.RuleEntry */ (toggles[currentMode])
 }
 
 function processRules(/** @type {Partial<Linter.RulesRecord>} */ config) {
@@ -257,14 +262,14 @@ function processRules(/** @type {Partial<Linter.RulesRecord>} */ config) {
 	return config
 }
 
-function processConfig(/** @type {Config} */ config) {
+function processConfig(/** @type {Linter.Config} */ config) {
 	if (config.rules) {
 		processRules(config.rules)
 	}
 	return config
 }
 
-function processExtends(/** @type {Config[]} */ extend) {
+function processExtends(/** @type {Linter.Config[]} */ extend) {
 	for (const config of extend) {
 		processConfig(config)
 	}
