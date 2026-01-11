@@ -1,6 +1,6 @@
 {
 	"name": "@hyperupcall/eslint-config",
-	"version": "1.4.1",
+	"version": "2.0.0",
 	"type": "module",
 	"description": "Edwin's ESLint configuration.",
 	"repository": {
