@@ -213,7 +213,6 @@ export default defineConfig([
 	},
 	// @eslint/markdown: https://github.com/eslint/markdown
 	{
-		language: 'markdown/commonmark',
 		files: ['**/*.md'],
 		plugins: {
 			markdown,
