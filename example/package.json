@@ -3,7 +3,7 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"check": "(cd .. && pnpm run build); cp ../output/index.mjs ./eslint.config.js && eslint --config ./eslint.config.js"
+		"check": "cp ../output/index.mjs ./eslint.config.js && eslint --config ./eslint.config.js"
 	},
 	"devDependencies": {
 		"@eslint-community/eslint-plugin-eslint-comments": "^4.4.1",
@@ -14,7 +14,6 @@
 		"eslint": "^9.22.0",
 		"eslint-config-prettier": "^10.1.1",
 		"eslint-plugin-import": "^2.31.0",
-		"eslint-plugin-mdx": "^3.2.0",
 		"eslint-plugin-n": "^17.16.2",
 		"eslint-plugin-no-unsanitized": "^4.1.2",
 		"eslint-plugin-perfectionist": "^4.10.1",

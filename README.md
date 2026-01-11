@@ -10,7 +10,7 @@ pnpm i -D \
 	eslint-plugin-import eslint-plugin-promise \
 	eslint-plugin-n eslint-plugin-unicorn eslint-plugin-security \
 	@eslint-community/eslint-plugin-eslint-comments eslint-plugin-regexp \
-	eslint-plugin-perfectionist eslint-plugin-no-unsanitized eslint-plugin-mdx
+	eslint-plugin-perfectionist eslint-plugin-no-unsanitized
 ```
 
 ## Usage

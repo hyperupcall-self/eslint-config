@@ -5,7 +5,7 @@
 	"description": "Edwin's ESLint configuration.",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/fox-land/eslint-config-hyperupcall.git"
+		"url": "git+https://github.com/fox-land/eslint-config-hyperupcall.git"
 	},
 	"bugs": {
 		"url": "https://github.com/fox-land/eslint-config-hyperupcall/issues"
@@ -13,18 +13,11 @@
 	"author": "Edwin Kofler <edwin@kofler.dev> (https://edwinkofler.com)",
 	"license": "MPL-2.0",
 	"private": false,
-	"exports": {
-		".": {
-			"import": "./output/index.mjs",
-			"require": "./output/index.cjs"
-		}
-	},
-	"files": [
-		"output/*"
-	],
+	"main": "./index.js",
 	"scripts": {
-		"build": "rm -rf ./output && rollup --config ./rollup.config.js && tsc --project ./tsconfig.json",
+		"build": "tsc --project ./tsconfig.json",
 		"format": "prettier --check .",
+		"format:fix": "prettier --write .",
 		"lint": "eslint ."
 	},
 	"peerDependencies": {
@@ -32,39 +25,29 @@
 		"@eslint/css": ">=0.5.0",
 		"@eslint/js": ">=9.0.0",
 		"@eslint/json": ">=0.11.0",
-		"@eslint/markdown": ">=6.0.0",
 		"eslint": "^9.0.0",
 		"eslint-config-prettier": ">=9.1.0",
-		"eslint-plugin-import-x": ">=4.0.0",
-		"eslint-plugin-markdown": ">=5.0.0",
-		"eslint-plugin-mdx": ">=3.0.0",
 		"eslint-plugin-n": ">=17.0.0",
 		"eslint-plugin-no-unsanitized": ">=4.0.0",
 		"eslint-plugin-perfectionist": ">=3.0.0",
 		"eslint-plugin-promise": ">=7.0.0",
 		"eslint-plugin-regexp": ">=2.0.0",
 		"eslint-plugin-security": ">=3.0.0",
-		"eslint-plugin-unicorn": ">=55.0.0"
+		"eslint-plugin-unicorn": ">=55.0.0",
+		"@eslint/markdown": ">=6.0.0",
+		"eslint-plugin-import-x": ">=4.0.0"
 	},
 	"dependencies": {
 		"globals": "^16.0.0"
 	},
 	"devDependencies": {
-		"@eslint/markdown": "^6.4.0",
-		"@hyperupcall/eslint-config": "^1.2.0",
-		"@hyperupcall/markdownlint-config": "^0.3.2",
-		"@hyperupcall/prettier-config": "^0.9.1",
-		"@rollup/plugin-node-resolve": "^16.0.1",
+		"@eslint/config-helpers": "^0.2.2",
 		"@types/node": "^22.15.17",
-		"eslint-plugin-import-x": "^4.11.1",
-		"markdownlint": "^0.37.4",
-		"prettier": "^3.5.3",
-		"prettier-plugin-pkg": "^0.18.1",
-		"rollup": "^4.36.0",
 		"typescript": "^5.8.2"
 	},
 	"markdownlint-cli2": {
 		"extends": "./node_modules/@hyperupcall/markdownlint-config/.markdownlint.json"
 	},
-	"prettier": "@hyperupcall/prettier-config"
+	"prettier": "@hyperupcall/prettier-config",
+	"packageManager": "pnpm@10.28.0+sha512.05df71d1421f21399e053fde567cea34d446fa02c76571441bfc1c7956e98e363088982d940465fd34480d4d90a0668bc12362f8aa88000a64e83d0b0e47be48"
 }

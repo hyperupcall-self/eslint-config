@@ -1,127 +1,227 @@
 import globals from 'globals'
-import { defineConfig } from 'eslint/config'
-import langJs from '@eslint/js'
+import { defineConfig, globalIgnores } from 'eslint/config'
+import css from '@eslint/css'
+import js from '@eslint/js'
+import json from '@eslint/json'
+import markdown from '@eslint/markdown'
 // @ts-expect-error
-import langMarkdown from '@eslint/markdown'
-import langCss from '@eslint/css'
-import langJson from '@eslint/json'
-// import langMdx from 'eslint-plugin-mdx' // TODO
 import pluginPromise from 'eslint-plugin-promise'
 import pluginNode from 'eslint-plugin-n'
+// @ts-expect-error
 import pluginSecurity from 'eslint-plugin-security'
+// @ts-expect-error
 import pluginComments from '@eslint-community/eslint-plugin-eslint-comments/configs'
 import pluginUnicorn from 'eslint-plugin-unicorn'
 import pluginRegexp from 'eslint-plugin-regexp'
+// @ts-expect-error
 import pluginNoUnsanitized from 'eslint-plugin-no-unsanitized'
 import pluginPerfectionist from 'eslint-plugin-perfectionist'
 import configPrettier from 'eslint-config-prettier'
 
 /**
- * @import { RuleEntry } from '@eslint/config-helpers'
+ * @import { Linter } from 'eslint'
+ * @import { Config, RuleEntry } from '@eslint/config-helpers'
  */
+
 // TODO: import-x
 
-const CurrentMode = process.env.HYPERUPCALL_LINT_MODE || 'release'
+const CurrentMode = process.env.HYPERUPCALL_LINT_LEVEL || 'release'
+
+const cssFiles = ['**/*.css']
+const jsFiles = ['**/*.js']
 
 export default defineConfig([
-	// https://github.com/eslint/eslint/tree/main/packages/js
-	langJs.configs.recommended,
+	globalIgnores(['**/build/', '**/output/', '**/dist/']),
+
+	// @eslint/css: https://github.com/eslint/css
 	{
-		rules: {
-			'array-callback-return': modeSwitch({
+		language: 'css/css',
+		files: cssFiles,
+		plugins: { css },
+		extends: processExtends([css.configs.recommended]),
+		rules: processRules({
+			'css/use-baseline': 'off',
+			'css/no-important': 'off',
+		}),
+	},
+	// @eslint/js: https://github.com/eslint/eslint/tree/main/packages/js
+	{
+		files: jsFiles,
+		plugins: { js },
+		extends: processExtends([js.configs.recommended]),
+		rules: processRules({
+			'array-callback-return': mode({
 				edit: ['off'],
 				commit: ['error'],
 				release: ['error'],
 			}),
-			'constructor-super': modeSwitch({
+			'constructor-super': mode({
 				edit: ['warn'],
 				commit: ['error'],
 				release: ['error'],
 			}),
 			'for-direction': ['error'],
-			'getter-return': modeSwitch({
+			'getter-return': mode({
 				edit: ['off'],
 				commit: ['error'],
 				release: ['error'],
 			}),
+		}),
+	},
+	// eslint-plugin-promise: https://github.com/eslint-community/eslint-plugin-promise
+	{
+		files: jsFiles,
+		plugins: { js },
+		extends: processExtends([pluginPromise.configs['flat/recommended']]),
+	},
+	// eslint-plugin-n: https://github.com/eslint-community/eslint-plugin-n
+	{
+		files: jsFiles,
+		plugins: { js },
+		extends: processExtends([pluginNode.configs['flat/recommended-script']]),
+	},
+	// eslint-plugin-security: https://github.com/eslint-community/eslint-plugin-security
+	{
+		files: jsFiles,
+		plugins: { js },
+		extends: processExtends([pluginSecurity.configs.recommended]),
+		rules: processRules({
+			'security/detect-object-injection': 'off',
+		}),
+	},
+	// eslint-plugin-eslint-comments: https://github.com/eslint-community/eslint-plugin-eslint-comments
+	{
+		files: jsFiles,
+		plugins: { js },
+		extends: processExtends([pluginComments.recommended]),
+	},
+	// eslint-plugin-unicorn: https://github.com/sindresorhus/eslint-plugin-unicorn
+	{
+		files: jsFiles,
+		plugins: { js },
+		extends: processExtends([pluginUnicorn.configs.recommended]),
+	},
+	// eslint-plugin-regexp: https://github.com/sindresorhus/eslint-plugin-regexp
+	{
+		files: jsFiles,
+		plugins: { js },
+		extends: processExtends([pluginRegexp.configs['flat/recommended']]),
+	},
+	// eslint-plugin-regexp: https://github.com/sindresorhus/eslint-plugin-regexp
+	{
+		files: jsFiles,
+		plugins: { js },
+		extends: processExtends([pluginNoUnsanitized.configs.recommended]),
+	},
+	// eslint-plugin-no-unsanitized: https://github.com/mozilla/eslint-plugin-no-unsanitized
+	{
+		files: jsFiles,
+		plugins: { js },
+		extends: processExtends([pluginNoUnsanitized.configs.recommended]),
+	},
+	// eslint-plugin-perfectionist: https://github.com/azat-io/eslint-plugin-perfectionist
+	{
+		files: jsFiles,
+		plugins: { js },
+		extends: processExtends([pluginPerfectionist.configs['recommended-natural']]),
+		rules: processRules({
+			'perfectionist/sort-objects': [
+				'error',
+				{
+					groups: ['r', 'g', 'b'],
+					customGroups: {
+						r: '^r$',
+						g: '^g$',
+						b: '^b$',
+					},
+					useConfigurationIf: {
+						allNamesMatchPattern: '^r|g|b$',
+					},
+				},
+				{
+					type: 'alphabetical',
+				},
+			],
+		}),
+	},
+	{
+		files: [
+			'eslint.config.js',
+			'eslint.config.mjs',
+			'eslint.config.cjs',
+			'eslint.config.ts',
+			'eslint.config.mts',
+			'eslint.config.cts',
+		],
+		plugins: { js },
+		extends: processExtends([pluginPerfectionist.configs['recommended-natural']]),
+		rules: processRules({
+			'perfectionist/sort-objects': [
+				'error',
+				{
+					groups: ['language', 'files', 'plugins', 'extends', 'rules'],
+					customGroups: {
+						language: '^language$',
+						files: '^files$',
+						plugins: '^plugins$',
+						extends: '^extends$',
+						rules: '^rules$',
+					},
+					useConfigurationIf: {
+						callingFunctionNamePattern: '^defineConfig$',
+					},
+				},
+				{
+					type: 'alphabetical',
+				},
+			],
+		}),
+	},
+	// eslint-config-prettier: https://github.com/prettier/eslint-config-prettier
+	{
+		files: jsFiles,
+		plugins: { js },
+		extends: processExtends([configPrettier]),
+	},
+	// Other JavaScript configuration.
+	{
+		files: jsFiles,
+		plugins: { js },
+		languageOptions: {
+			sourceType: 'module',
 		},
 	},
-
-	// https://github.com/eslint-community/eslint-plugin-promise
-	pluginPromise.configs['flat/recommended'],
-
-	// https://github.com/eslint-community/eslint-plugin-n
-	pluginNode.configs['flat/recommended-script'],
-
-	// https://github.com/eslint-community/eslint-plugin-security
-	pluginSecurity.configs.recommended,
-
-	// https://github.com/eslint-community/eslint-plugin-eslint-comments
-	pluginComments.recomended,
-
-	// https://github.com/sindresorhus/eslint-plugin-unicorn
-	pluginUnicorn.configs['flat/recommended'],
-
-	// https://www.npmjs.com/package/eslint-plugin-regexp
-	pluginRegexp.configs['flat/recommended'],
-
-	// https://github.com/mozilla/eslint-plugin-no-unsanitized
-	pluginNoUnsanitized.configs.recommended,
-
-	// https://github.com/azat-io/eslint-plugin-perfectionist
-	pluginPerfectionist.configs['recommended-natural'],
-
-	// https://github.com/prettier/eslint-config-prettier
-	configPrettier,
-
-	// https://github.com/eslint/markdown
-	...langMarkdown.configs.recommended,
+	// @eslint/json: https://github.com/eslint/json
 	{
+		language: 'json/json',
+		files: ['**/*.json'],
+		plugins: { json },
+		extends: processExtends([json.configs.recommended]),
+		ignores: ['package-lock.json'],
+	},
+	{
+		language: 'json/jsonc',
+		files: ['**/*.jsonc'],
+		plugins: { json },
+		extends: processExtends([json.configs.recommended]),
+	},
+	{
+		language: 'json/json5',
+		files: ['**/*.json5'],
+		plugins: { json },
+		extends: processExtends([json.configs.recommended]),
+	},
+	// @eslint/markdown: https://github.com/eslint/markdown
+	{
+		language: 'markdown/commonmark',
 		files: ['**/*.md'],
 		plugins: {
-			langMarkdown,
+			markdown,
 		},
-		language: 'markdown/commonmark',
-		rules: {},
-	},
-
-	// https://github.com/mdx-js/eslint-mdx/tree/master/packages/eslint-plugin-mdx
-	// ...langMdx.flat,
-	// 	processor: langMdx.createRemarkProcessor({
-	// 		lintCodeBlocks: true,
-	// 	}),
-	// },
-
-	// https://github.com/eslint/css
-	{
-		files: ['**/*.css'],
-		language: 'css/css',
-		...langCss.configs.recommended,
-	},
-
-	// https://github.com/eslint/json
-	{
-		plugins: {
-			langJson,
-		},
-	},
-	{
-		files: ['**/*.json'],
-		ignores: ['package-lock.json'],
-		language: 'json/json',
-		...langJson.configs.recommended,
-	},
-
-	{
-		files: ['**/*.jsonc'],
-		language: 'json/jsonc',
-		...langJson.configs.recommended,
-	},
-
-	{
-		files: ['**/*.json5'],
-		language: 'json/json5',
-		...langJson.configs.recommended,
+		extends: processExtends([markdown.configs.recommended]),
+		rules: processRules({
+			'markdown/no-missing-label-refs': 'off', // TODO: Errors in frontmatter TOML arrays
+		}),
 	},
 ])
 
@@ -129,16 +229,45 @@ export default defineConfig([
  * @param {Record<'edit' | 'commit' | 'release', unknown | undefined>} toggles
  * @returns {RuleEntry}
  */
-function modeSwitch(toggles) {
-	const possibleModes = ['edit', 'commit', 'release']
+function mode(toggles) {
+	const possibleModes = ['none', 'edit', 'commit', 'release']
+	if (CurrentMode === 'none') {
+		return 'off'
+	}
 	const currentMode = 'edit'
 	if (!possibleModes.includes(CurrentMode)) {
 		throw new Error(
-			`Expected the current mode to be ${new Intl.ListFormat().format(possibleModes).map((/** @type {string} */ item) => `"${item}"`)}. Found "${CurrentMode}"`,
+			`Expected the current mode to be ${new Intl.ListFormat().format(possibleModes.map((/** @type {string} */ item) => `"${item}"`))}. Found "${CurrentMode}"`,
 		)
 	}
 
-	// if (currentMode === 'edit' && toggles.edit)
-
 	return /** @type RuleEntry */ (toggles[currentMode])
+}
+
+function processRules(/** @type {Partial<Linter.RulesRecord>} */ config) {
+	if (CurrentMode === 'off') {
+		for (const ruleName in config) {
+			if (Array.isArray(config[ruleName])) {
+				config[ruleName][0] = 'off'
+			} else {
+				config[ruleName] = 'off'
+			}
+		}
+	}
+
+	return config
+}
+
+function processConfig(/** @type {Config} */ config) {
+	if (config.rules) {
+		processRules(config.rules)
+	}
+	return config
+}
+
+function processExtends(/** @type {Config[]} */ extend) {
+	for (const config of extend) {
+		processConfig(config)
+	}
+	return extend
 }
