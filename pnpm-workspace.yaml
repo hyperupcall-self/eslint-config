@@ -2,3 +2,4 @@ onlyBuiltDependencies:
   - unrs-resolver
 publicHoistPattern:
   - 'prettier'
+  - 'eslint'

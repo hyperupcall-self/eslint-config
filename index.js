@@ -174,13 +174,28 @@ export default defineConfig([
 				'error',
 				{
 					groups: ['language', 'files', 'plugins', 'extends', 'rules'],
-					customGroups: {
-						language: '^language$',
-						files: '^files$',
-						plugins: '^plugins$',
-						extends: '^extends$',
-						rules: '^rules$',
-					},
+					customGroups: [
+						{
+							groupName: 'language',
+							elementNamePattern: '^language$',
+						},
+						{
+							groupName: 'files',
+							elementNamePattern: '^files$',
+						},
+						{
+							groupName: 'plugins',
+							elementNamePattern: '^plugins$',
+						},
+						{
+							groupName: 'extends',
+							elementNamePattern: '^extends$',
+						},
+						{
+							groupName: 'rules',
+							elementNamePattern: '^rules$',
+						},
+					],
 					useConfigurationIf: {
 						callingFunctionNamePattern: '^defineConfig$',
 					},

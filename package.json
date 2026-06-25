@@ -13,30 +13,30 @@
 	"author": "Edwin Kofler <edwin@kofler.dev> (https://edwinkofler.com)",
 	"license": "MPL-2.0",
 	"private": false,
+	"packageManager": "pnpm@10.28.0+sha512.05df71d1421f21399e053fde567cea34d446fa02c76571441bfc1c7956e98e363088982d940465fd34480d4d90a0668bc12362f8aa88000a64e83d0b0e47be48",
 	"main": "./index.js",
 	"scripts": {
-		"typecheck": "tsc --project ./tsconfig.json",
 		"format": "hyperupcall-scripts-nodejs format",
-		"lint": "hyperupcall-scripts-nodejs lint"
-	},
-	"peerDependencies": {
-		"@eslint-community/eslint-plugin-eslint-comments": ">=4.0.0",
-		"@eslint/css": ">=0.5.0",
-		"@eslint/js": ">=9.0.0",
-		"@eslint/json": ">=0.11.0",
-		"@eslint/markdown": ">=6.0.0",
-		"eslint": ">=9.0.0",
-		"eslint-config-prettier": ">=9.1.0",
-		"eslint-plugin-import-x": ">=4.0.0",
-		"eslint-plugin-n": ">=17.0.0",
-		"eslint-plugin-no-unsanitized": ">=4.0.0",
-		"eslint-plugin-perfectionist": ">=3.0.0",
-		"eslint-plugin-promise": ">=7.0.0",
-		"eslint-plugin-regexp": ">=2.0.0",
-		"eslint-plugin-security": ">=3.0.0",
-		"eslint-plugin-unicorn": ">=55.0.0"
+		"lint": "hyperupcall-scripts-nodejs lint",
+		"typecheck": "tsc --project ./tsconfig.json"
 	},
 	"dependencies": {
+		"@eslint-community/eslint-plugin-eslint-comments": "^4.7.1",
+		"@eslint/css": "^1.0.0",
+		"@eslint/js": "^10.0.1",
+		"@eslint/json": "^1.1.0",
+		"@eslint/markdown": "^7.5.1",
+		"@hyperupcall/eslint-config": "^1.2.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-import-x": "^4.16.2",
+		"eslint-plugin-mdx": "^3.7.0",
+		"eslint-plugin-n": "^17.24.0",
+		"eslint-plugin-no-unsanitized": "^4.1.5",
+		"eslint-plugin-perfectionist": "^5.9.1",
+		"eslint-plugin-promise": "^7.3.0",
+		"eslint-plugin-regexp": "^3.1.0",
+		"eslint-plugin-security": "^4.0.0",
+		"eslint-plugin-unicorn": "^63.0.0",
 		"globals": "^17.0.0"
 	},
 	"devDependencies": {
@@ -47,6 +47,5 @@
 	"markdownlint-cli2": {
 		"extends": "./node_modules/@hyperupcall/markdownlint-config/.markdownlint.json"
 	},
-	"prettier": "@hyperupcall/scripts-nodejs/config-prettier.js",
-	"packageManager": "pnpm@10.28.0+sha512.05df71d1421f21399e053fde567cea34d446fa02c76571441bfc1c7956e98e363088982d940465fd34480d4d90a0668bc12362f8aa88000a64e83d0b0e47be48"
+	"prettier": "@hyperupcall/scripts-nodejs/config-prettier.js"
 }
