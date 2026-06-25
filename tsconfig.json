@@ -1,5 +1,6 @@
 {
 	"include": ["./index.js"],
+<<<<<<< Updated upstream
 	"compilerOptions": {
 		"allowJs": true,
 		"checkJs": true,
@@ -11,6 +12,20 @@
 		"declaration": true,
 		"emitDeclarationOnly": true,
 		"strict": true,
+=======
+	"exclude": ["**/node_modules/**"],
+	"compilerOptions": {
+		"skipLibCheck": true,
+		"allowJs": true,
+		"checkJs": true,
+		"target": "es2015",
+		"moduleResolution": "node16",
+		"module": "node16",
+		"lib": ["ES2019"],
+		"noEmit": false,
+		"declaration": true,
+		"emitDeclarationOnly": true,
+>>>>>>> Stashed changes
 		"outDir": "./output"
 	}
 }
