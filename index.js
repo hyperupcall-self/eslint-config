@@ -137,15 +137,15 @@ export default defineConfig([
 					customGroups: [
 						{
 							groupName: 'r',
-							match: '^r$',
+							elementNamePattern: '^r$',
 						},
 						{
 							groupName: 'g',
-							match: '^g$',
+							elementNamePattern: '^g$',
 						},
 						{
 							groupName: 'b',
-							match: '^b$',
+							elementNamePattern: '^b$',
 						},
 					],
 					useConfigurationIf: {
